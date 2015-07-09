@@ -1,0 +1,15 @@
+{
+  "name": "wetlands-mapper",
+  "version": "0.0.1",
+  "dependencies": {
+  	 "jquery": "^2.1.3",
+     "fontawesome": "^4.3.0",
+     "jquery.nicescroll": "inuyaksa/jquery.nicescroll#~3.6.0",
+  	 "bootstrap": "latest",
+	   "bootstrap-sidebar" : "^0.2.0"
+  	 
+	   ,
+  	   "bootstrap-map-js" : "latest"
+	   
+  }
+}
