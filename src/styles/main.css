@@ -192,6 +192,13 @@ body {
     width:inherit;
 }
 
+#fwsLogo {
+    height: auto; 
+    width: auto; 
+    max-width: 40px;
+    max-height: 40px;
+}
+
 .no-col-padding {
     padding: 0;
 }

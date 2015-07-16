@@ -222,10 +222,9 @@ require([
 
                     var template = new esri.InfoTemplate("Wetland",
                         "<b>Classification:</b> " + attr["ATTRIBUTE"] + "<br/>"+
-                        "<p><b>Wetland Type:</b> " + attr["WETLAND_TYPE"] + "<br/><br/>" +
-                        "<b>Acres:</b> " + attr["ACRES"] + "<br/>" + 
-                        "<b>Status:</b> " + attr["STATUS"] + "<br/>" + 
-                        "<b>Source Type:</b> " + attr["SOURCE_TYPE"] + "<br/>" +
+                        "<p><b>Wetland Type:</b> " + attr["WETLAND_TYPE"] + "<br/>" +
+                        "<b>Acres:</b> " + Number(attr["ACRES"]).toFixed(2) + "<br/>" +
+                        "<b>Image Date(s):</b> " + attr["IMAGE_DATE"] + "<br/>" +
                         "<br/><p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to wetland</a></p>");
                         
                     //ties the above defined InfoTemplate to the feature result returned from a click event 
