@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Wetlands Mapper</title>
+    <title>NWI Wetlands Mapper</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -31,9 +31,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://usgs.gov">
-                <img alt="USGS logo" src="images/usgs-logo.png">
-                <span class='hidden-xs' style='font-size:20px;display:inline-block;'>&nbsp;&nbsp;Wetlands Mapper Test</span>
+            <a class="navbar-brand" href="http://www.fws.gov/wetlands/Data/Mapper.html">
+                <img id="fwsLogo" alt="FWS logo" src="images/fwsLogo.png">
+                <span style='font-size:20px;display:inline-block;'>&nbsp;&nbsp;National Wetlands Inventory</span>
             </a>
         </div>
 
@@ -145,12 +145,12 @@
 
                 <div id="legendElement" class="panel panel-default legendClass">
                     <div id="legendHeading" class=" legendHeading" role="tab">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" style="text-decoration: none"  href="#legendCollapse" aria-expanded="true" aria-controls="collapseOne">
-                                <span class="glyphicon glyphicon-list"></span>
-                                Legend
-                            </a>
-                        </h4>
+                        <a data-toggle="collapse" style="text-decoration: none"  href="#legendCollapse" aria-expanded="true" aria-controls="collapseOne">
+                            <h4 class="panel-title">
+                            <span class="glyphicon glyphicon-list"></span>
+                            Legend
+                            </h4>
+                        </a>
                     </div>
                     <div id="legendCollapse" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                         <div id="legendDiv" class="panel-body"></div>

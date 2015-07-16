@@ -105,7 +105,7 @@ require([
         },
         {
             "groupHeading": "Data Source Group",
-            "showGroupHeading": true,
+            "showGroupHeading": false,
             "includeInLayerList": true,
             "layers": {
                 "Source Type":{
@@ -153,26 +153,6 @@ require([
                         "layerType": "agisDynamic",
                         "includeInLayerList": true,
                         "exclusiveGroupName":"Data Source",
-                        "includeLegend" : true
-                    }
-                }
-            }
-        },
-        {
-            "groupHeading": "Areas of Interest",
-            "showGroupHeading": false,
-            "includeInLayerList": true,
-            "layers": {
-                "Areas of Interest": {
-                    "url" : "http://107.20.228.18/ArcGIS/rest/services/Areas_of_Interest/MapServer/0",
-                    "options": {
-                        "id": "aoi",
-                        "visible": false
-                    },
-                    "wimOptions": {
-                        "type": "layer",
-                        "layerType": "agisFeature",
-                        "includeInLayerList": true,
                         "includeLegend" : true
                     }
                 }
