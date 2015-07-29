@@ -21,8 +21,10 @@ require([
     'esri/dijit/Geocoder',
     'esri/dijit/PopupTemplate',
     'esri/graphic',
+    'esri/geometry/Extent',
     'esri/geometry/Multipoint',
     'esri/geometry/Point',
+    'esri/SpatialReference',
     'esri/symbols/PictureMarkerSymbol',
     'esri/tasks/IdentifyParameters',
     'esri/tasks/IdentifyTask',
@@ -41,8 +43,10 @@ require([
     Geocoder,
     PopupTemplate,
     Graphic,
+    Extent,
     Multipoint,
     Point,
+    SpatialReference,
     PictureMarkerSymbol,
     IdentifyParameters,
     IdentifyTask,
@@ -59,8 +63,7 @@ require([
 
     map = Map('mapDiv', {
         basemap: 'hybrid',
-        center: [-95.6, 38.6],
-        zoom: 5
+        extent: new Extent(-14638882.654811008, 2641706.3772205533, -6821514.898031538, 6403631.161302788, new SpatialReference({ wkid:3857 }))
     });
     var home = new HomeButton({
         map: map
@@ -153,9 +156,9 @@ require([
     });
 
     identifyParams = new IdentifyParameters();
-    identifyParams.tolerance = 10;
+    identifyParams.tolerance = 0;
     identifyParams.returnGeometry = true;
-    identifyParams.layerOption = "LAYER_OPTION_ALL";
+    identifyParams.layerOption = IdentifyParameters.LAYER_OPTION_ALL;
     identifyParams.width  = map.width;
     identifyParams.height = map.height;
     //identifyTask = new esri.tasks.IdentifyTask("http://50.17.205.92/arcgis/rest/services/NAWQA/DecadalMap/MapServer");
@@ -196,10 +199,21 @@ require([
 
             deferredResult.addCallback(function(response) {     
                 
-                if (response.length > 0) {
-                    var feature = response[0].feature;
-                    var wetlandsFeature = response[0].feature;
-                    var attr = feature.attributes;
+                if (response.length > 1) {
+
+                    var feature;
+                    var attr;
+                    var attrStatus;
+
+                    for (var i = 0; i < response.length; i++) {
+                        if (response[i].layerId == 0) {
+                            feature = response[i].feature;
+                            attr = feature.attributes;
+                        } else if (response[i].layerId == 1) {
+                            attrStatus = response[i].feature.attributes;
+                        }
+                        
+                    }
                     
                     // Code for adding wetland highlight
                     var symbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, 
@@ -212,19 +226,11 @@ require([
 
                     map.graphics.add(graphic);
 
-
-                    //set the customized template for displaying content in the info window. HTML tags can be used for styling.
-                    // The string before the comma within the parens immediately following the constructor sets the title of the info window.
-                    var attr = feature.attributes;
-
-                    //var currentConst = organicConstituentSelect.selectedOptions[0].attributes.constituent.textContent;
-                    //var displayConst = organicConstituentSelect.selectedOptions[0].attributes.displayname.textContent;
-
                     var template = new esri.InfoTemplate("Wetland",
-                        "<b>Classification:</b> " + attr["ATTRIBUTE"] + "<br/>"+
-                        "<p><b>Wetland Type:</b> " + attr["WETLAND_TYPE"] + "<br/>" +
-                        "<b>Acres:</b> " + Number(attr["ACRES"]).toFixed(2) + "<br/>" +
-                        "<b>Image Date(s):</b> " + attr["IMAGE_DATE"] + "<br/>" +
+                        "<b>Classification:</b> " + attr.ATTRIBUTE + "<br/>"+
+                        "<p><b>Wetland Type:</b> " + attr.WETLAND_TYPE + "<br/>" +
+                        "<b>Acres:</b> " + Number(attr.ACRES).toFixed(2) + "<br/>" +
+                        "<b>Image Date(s):</b> " + attrStatus.IMAGE_DATE + "<br/>" +
                         "<br/><p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to wetland</a></p>");
                         
                     //ties the above defined InfoTemplate to the feature result returned from a click event 
