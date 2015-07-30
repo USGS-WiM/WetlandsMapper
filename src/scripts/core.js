@@ -16,14 +16,15 @@ var identifyTask, identifyParams;
 require([
     'esri/map',
     'esri/arcgis/utils',
-    'esri/dijit/HomeButton',
-    'esri/layers/ArcGISTiledMapServiceLayer',
     'esri/dijit/Geocoder',
+    'esri/dijit/HomeButton',
+    'esri/dijit/LocateButton',
     'esri/dijit/PopupTemplate',
     'esri/graphic',
     'esri/geometry/Extent',
     'esri/geometry/Multipoint',
     'esri/geometry/Point',
+    'esri/layers/ArcGISTiledMapServiceLayer',
     'esri/SpatialReference',
     'esri/symbols/PictureMarkerSymbol',
     'esri/tasks/IdentifyParameters',
@@ -38,14 +39,15 @@ require([
 ], function (
     Map,
     arcgisUtils,
-    HomeButton,
-    ArcGISTiledMapServiceLayer,
     Geocoder,
+    HomeButton,
+    LocateButton,
     PopupTemplate,
     Graphic,
     Extent,
     Multipoint,
     Point,
+    ArcGISTiledMapServiceLayer,
     SpatialReference,
     PictureMarkerSymbol,
     IdentifyParameters,
@@ -69,6 +71,10 @@ require([
         map: map
     }, "homeButton");
     home.startup();
+    var locate = new LocateButton({
+        map: map
+    }, "locateButton");
+    locate.startup();
 
     //following block forces map size to override problems with default behavior
     $(window).resize(function () {
