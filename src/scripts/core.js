@@ -158,7 +158,7 @@ require([
     });
 
     on(dom.byId('btnNatlMap'), 'click', function () {
-        map.addLayer(nationalMapBasemap);
+        map.addLayer(nationalMapBasemap, 1);
     });
 
     identifyParams = new IdentifyParameters();
@@ -192,6 +192,8 @@ require([
         
         map.graphics.clear(); 
         map.infoWindow.hide();
+
+        //alert("scale: " + map.getScale() + ", level: " + map.getLevel());
 
         identifyParams.geometry = evt.mapPoint;
         identifyParams.mapExtent = map.extent;
@@ -337,7 +339,7 @@ require([
             }
             //zoomToPlaces(places);
             var centerPoint = new Point(places[0].feature.geometry);
-            map.centerAndZoom(centerPoint, 13);
+            map.centerAndZoom(centerPoint, 17);
             //map.setLevel(15);
 
         } else {
