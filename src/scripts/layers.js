@@ -187,7 +187,7 @@ require([
                         'layerType': 'agisDynamic',
                         'includeInLayerList': true,
                         'hasOpacitySlider': true,
-                        'includeLegend' : false
+                        'includeLegend' : true
                     }
                 }
             }
