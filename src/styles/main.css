@@ -1,6 +1,7 @@
 html, body {
     height: 100%;
     overflow:hidden;
+    border: 0px solid #E7E7E7;
 }
 
 body {
@@ -169,11 +170,17 @@ body {
 
 .map {
     overflow: auto;
+    border: none; 
 }
 
 #mapDiv {
     min-height: 100%;
     max-height: 100%;
+    border: none;
+}
+
+#mapDiv_gc {
+    border: none;
 }
 
 .opacitySlider {
@@ -235,7 +242,7 @@ body {
 
 [class*="col-"] {
     background-color: #eee;
-    border: 1px solid #E7E7E7;
+    border: 0px solid #E7E7E7;
     text-align: center;
 }
 

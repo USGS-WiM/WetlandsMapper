@@ -235,7 +235,7 @@ require([
                     map.graphics.add(graphic);
 
                     var template = new esri.InfoTemplate("Wetland",
-                        "<b>Classification:</b> " + attr.ATTRIBUTE + "<br/>"+
+                        "<b>Classification:</b> " + attr.ATTRIBUTE + " (<a target='_blank' href='http://107.20.228.18/decoders/wetlands.aspx?CodeURL=" + attr.ATTRIBUTE + "''>decode</a>)<br/>"+
                         "<p><b>Wetland Type:</b> " + attr.WETLAND_TYPE + "<br/>" +
                         "<b>Acres:</b> " + Number(attr.ACRES).toFixed(2) + "<br/>" +
                         "<b>Image Date(s):</b> " + attrStatus.IMAGE_DATE + "<br/>" +
@@ -527,11 +527,18 @@ require([
                 else if (layerDetails.wimOptions.layerType === 'agisDynamic') {
                     var layer = new ArcGISDynamicMapServiceLayer(layerDetails.url, layerDetails.options);
                     //check if include in legend is true
-                    if (layerDetails.wimOptions && layerDetails.wimOptions.includeLegend == true){
-                        legendLayers.push({layer:layer, title: layerName});
-                    }
                     if (layerDetails.visibleLayers) {
                         layer.setVisibleLayers(layerDetails.visibleLayers);
+                    }
+                    if (layerDetails.wimOptions && layerDetails.wimOptions.layerDefinitions) {
+                        var layerDefs = [];
+                        $.each(layerDetails.wimOptions.layerDefinitions, function (index, def) {
+                            layerDefs[index] = def;
+                        });
+                        layer.setLayerDefinitions(layerDefs);
+                    }
+                    if (layerDetails.wimOptions && layerDetails.wimOptions.includeLegend == true){
+                        legendLayers.push({layer:layer, title: layerName});
                     }
                     //map.addLayer(layer);
                     addLayer(group.groupHeading, group.showGroupHeading, layer, layerName, exclusiveGroupName, layerDetails.options, layerDetails.wimOptions);
@@ -579,12 +586,14 @@ require([
                             if (currentLayer[0] == exclusiveGroupName) {
                                 if ($("#" + currentLayer[1]).find('i.glyphspan').hasClass('fa-dot-circle-o') && exGroupRoot.find('i.glyphspan').hasClass('fa-check-square-o')) {
                                     console.log('adding layer: ',currentLayer[1]);
-                                    map.addLayer(currentLayer[2]);
+                                    map.addLayer(currentLayer[2]);              
                                     var tempLayer = map.getLayer(currentLayer[2].id);
                                     tempLayer.setVisibility(true);
                                 } else if (exGroupRoot.find('i.glyphspan').hasClass('fa-square-o')) {
                                     console.log('removing layer: ',currentLayer[1]);
-                                    map.removeLayer(currentLayer[2]);
+                                    //map.removeLayer(currentLayer[2]);
+                                    var tempLayer = map.getLayer(currentLayer[2].id);
+                                    tempLayer.setVisibility(false);
                                 }
                             }
 
@@ -624,11 +633,13 @@ require([
                                     //$('#' + camelize(currentLayer[1])).toggle();
                                 }
                                 else if (currentLayer[1] == newLayer && $("#" + camelize(exclusiveGroupName + " Root")).find('i.glyphspan').hasClass('fa-square-o')) {
-                                    console.log('groud heading not checked');
+                                    console.log('group heading not checked');
                                 }
                                 else {
                                     console.log('removing layer: ',currentLayer[1]);
-                                    map.removeLayer(currentLayer[2]);
+                                    //map.removeLayer(currentLayer[2]);
+                                    var tempLayer = map.getLayer(currentLayer[2].id);
+                                    tempLayer.setVisibility(false);
                                     if ($("#" + currentLayer[1]).find('i.glyphspan').hasClass('fa-dot-circle-o')) {
                                         $("#" + currentLayer[1]).find('i.glyphspan').toggleClass('fa-dot-circle-o fa-circle-o');
                                     }
@@ -645,16 +656,25 @@ require([
 
                 //create layer toggle
                 //var button = $('<div align="left" style="cursor: pointer;padding:5px;"><span class="glyphspan glyphicon glyphicon-check"></span>&nbsp;&nbsp;' + layerName + '</div>');
-                if (layer.visible && wimOptions.hasOpacitySlider !== undefined && wimOptions.hasOpacitySlider == true) {
-                    var button = $('<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons"> <button type="button" class="btn btn-default active" aria-pressed="true" style="font-weight: bold;text-align: left"><i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName + '<span id="opacity' + camelize(layerName) + '" class="glyphspan glyphicon glyphicon-adjust pull-right"></button></span></div>');
+                if ((layer.visible && wimOptions.hasOpacitySlider !== undefined && wimOptions.hasOpacitySlider == true && wimOptions.moreinfo !== undefined && wimOptions.moreinfo)) {
+                    var button = $('<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons"> <button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left"><i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName + '<span id="info' + camelize(layerName) + '" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"><span id="opacity' + camelize(layerName) + '" style="padding-left: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></button></span></div>');
+                } else if ((!layer.visible && wimOptions.hasOpacitySlider !== undefined && wimOptions.hasOpacitySlider == true && wimOptions.moreinfo !== undefined && wimOptions.moreinfo)) {
+                    var button = $('<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons"> <button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left"><i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName + '<span id="info' + camelize(layerName) + '" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"><span id="opacity' + camelize(layerName) + '" style="padding-left: 5px" class="glyphspan glyphicon glyphicon-adjust pull-right"></button></span></div>');
+                } else if (layer.visible && wimOptions.hasOpacitySlider !== undefined && wimOptions.hasOpacitySlider == true) {
+                    var button = $('<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons"> <button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left"><i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName + '<span id="info' + camelize(layerName) + '" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></button></span></div>');
                 } else if ((!layer.visible && wimOptions.hasOpacitySlider !== undefined && wimOptions.hasOpacitySlider == true)) {
-                    var button = $('<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons"> <button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left"><i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName + '<span id="opacity' + camelize(layerName) + '" class="glyphspan glyphicon glyphicon-adjust pull-right"></button></span></div>');
+                    var button = $('<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons"> <button type="button" class="btn btn-default active" aria-pressed="true" style="font-weight: bold;text-align: left"><i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName + '<span id="opacity' + camelize(layerName) + '" class="glyphspan glyphicon glyphicon-adjust pull-right"></button></span></div>');
+                } else if ((layer.visible && wimOptions.moreinfo !== undefined && wimOptions.moreinfo)) {
+                    var button = $('<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons"> <button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left"><i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName + '<span id="opacity' + camelize(layerName) + '" class="glyphspan glyphicon glyphicon-adjust pull-right"></button></span></div>');
+                } else if ((!layer.visible && wimOptions.moreinfo !== undefined && wimOptions.moreinfo)) {
+                    var button = $('<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons"> <button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left"><i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName + '<span id="info' + camelize(layerName) + '" title="more info" class="glyphspan glyphicon glyphicon-question-sign pull-right"></button></span></div>');
                 } else if (layer.visible) {
                     var button = $('<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons"> <button type="button" class="btn btn-default active" aria-pressed="true" style="font-weight: bold;text-align: left"><i class="glyphspan fa fa-check-square-o"></i>&nbsp;&nbsp;' + layerName + '</button></span></div>');
                 } else {
                     var button = $('<div class="btn-group-vertical lyrTog" style="cursor: pointer;" data-toggle="buttons"> <button type="button" class="btn btn-default" aria-pressed="true" style="font-weight: bold;text-align: left"><i class="glyphspan fa fa-square-o"></i>&nbsp;&nbsp;' + layerName + '</button> </div>');
                 }
 
+                
                 //click listener for regular
                 button.click(function(e) {
 
@@ -662,8 +682,7 @@ require([
                     $(this).find('i.glyphspan').toggleClass('fa-check-square-o fa-square-o');
                     $(this).find('button').button('toggle');
 
-                    e.preventDefault();
-                    e.stopPropagation();
+                    
 
                     //$('#' + camelize(layerName)).toggle();
 
@@ -709,6 +728,15 @@ require([
                     $('#' + groupDivID).append(exGroupDiv);
                 } else {
                     $('#' + groupDivID).append(button);
+                    if (wimOptions.moreinfo !== undefined && wimOptions.moreinfo) {
+                        var id = "#info" + camelize(layerName);
+                        var moreinfo = $(id);
+                        moreinfo.click(function(e) {
+                            window.open(wimOptions.moreinfo, "_blank");
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+                    }
                     if ($("#opacity"+camelize(layerName)).length > 0) {
                         $("#opacity"+camelize(layerName)).hover(function () {
                             $(".opacitySlider").remove();
@@ -752,6 +780,15 @@ require([
             else {
                 //otherwise append
                 $('#toggle').append(button);
+                if (wimOptions.moreinfo !== undefined && wimOptions.moreinfo) {
+                    var id = "#info" + camelize(layerName);
+                    var moreinfo = $(id);
+                    moreinfo.click(function(e) {
+                        alert(e.currentTarget.id);
+                        e.preventDefault();
+                        e.stopPropagation();
+                    });
+                }
             }
         }
 
