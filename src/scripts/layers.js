@@ -28,6 +28,7 @@ require([
                         'zoomScale': 144448,
                         'hasOpacitySlider': true,
                         'includeLegend' : true,
+                        'moreinfo': 'http://www.fws.gov/wetlands/Data/Wetlands-Product-Summary.html',
                         'otherLayersToggled': ['wetlandsStatus', 'wetlandsRaster']
                     }
                 },
@@ -44,7 +45,8 @@ require([
                         'type': 'layer',
                         'layerType': 'agisDynamic',
                         'includeInLayerList': false,
-                        'includeLegend' : true
+                        'includeLegend' : true,
+                        'layerDefinitions': {0: "STATUS = 'Digital' OR STATUS = 'No_Data'"}
                     }
                 },
                 'Wetlands Raster' : {
@@ -76,6 +78,7 @@ require([
                         'includeInLayerList': true,
                         'zoomScale': 144448,
                         'hasOpacitySlider': true,
+                        'moreinfo': 'http://www.fws.gov/wetlands/Other/Riparian-Product-Summary.html',
                         'includeLegend' : true
                     }
                 },
@@ -171,6 +174,7 @@ require([
                         'includeInLayerList': true,
                         'zoomScale': 144448,
                         'hasOpacitySlider': true,
+                        'moreinfo': 'http://www.fws.gov/gis/data/CadastralDB/FwsInterest.html',
                         'includeLegend' : true
                     }
                 },
@@ -187,6 +191,7 @@ require([
                         'layerType': 'agisDynamic',
                         'includeInLayerList': true,
                         'hasOpacitySlider': true,
+                        'moreinfo': 'http://www.fws.gov/wetlands/Data/Historic-Wetlands-Product-Summary.html',
                         'includeLegend' : true
                     }
                 }
