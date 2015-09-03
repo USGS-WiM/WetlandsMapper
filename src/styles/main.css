@@ -26,13 +26,25 @@ body {
         display: none;
     }
 
+    #printButtonText {
+        display: none;
+    }
+
     #legendButtonNavBar {
         display: none;
+    }
+
+    #measureLabel {
+        display:none;
     }
 
     /*.basemapThumb {*/
     /*display: none;*/
     /*}*/
+}
+
+#printExecuteButton, #printDismissButton {
+    margin-top: 5px;
 }
 
 .overflow-y-hidden {
@@ -74,6 +86,10 @@ body {
 
 #sidebar {
     opacity: 0.9;
+}
+
+.navbar-btn {
+    margin-left: 5px;
 }
 
 .lyrTog button .active {
@@ -196,6 +212,39 @@ body {
     border-radius: 5px;
 }
 
+.measurementClass {
+    position:absolute;
+    top:5px;
+    left:45px;
+    z-index:3;
+    color: black;
+    /*width: 240px;*/
+    background-color: rgb(255,255,255);
+    background-color: rgba(255,255,255,0.8);
+    box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+    /*min-width: 150px;*/
+    border-radius: 4px;
+}
+
+.measurementHeading {
+    color: black;
+    background-color: rgb(255,255,255);
+    background-color: rgba(255,255,255,0.8);
+    text-decoration: none !important;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+#measurementCollapse {
+    width: 240px;
+}
+
+.navbar-btn {
+    margin-left: 5px;
+}
+
 .modal-dialog {
     padding-top: 60px;
 }
@@ -267,4 +316,13 @@ input[type="checkbox"], input[type="radio"] {
 
 .radioTog {
     width: 75%;
+}
+
+.claro .dijitButtonNode .dijitArrowButtonInner {
+    width: 15px;
+    height: 15px;
+    margin: 0 auto;
+    background-image: url("http://js.arcgis.com/3.13/dijit/themes/claro/form/images/buttonArrows.png");
+    background-repeat: no-repeat;
+    background-position: -51px 53%;
 }

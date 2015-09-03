@@ -10,25 +10,34 @@ var map;
 var allLayers;
 var maxLegendHeight;
 var maxLegendDivHeight;
+var printCount = 0;
 
 var identifyTask, identifyParams;
 
 require([
     'esri/map',
     'esri/arcgis/utils',
+    'esri/config',
     'esri/dijit/Geocoder',
     'esri/dijit/HomeButton',
     'esri/dijit/LocateButton',
+    'esri/dijit/Measurement',
     'esri/dijit/PopupTemplate',
     'esri/graphic',
     'esri/geometry/Extent',
     'esri/geometry/Multipoint',
     'esri/geometry/Point',
     'esri/layers/ArcGISTiledMapServiceLayer',
+    'esri/SnappingManager',
     'esri/SpatialReference',
     'esri/symbols/PictureMarkerSymbol',
+    'esri/tasks/GeometryService',
     'esri/tasks/IdentifyParameters',
     'esri/tasks/IdentifyTask',
+    'esri/tasks/LegendLayer',
+    'esri/tasks/PrintTask',
+    'esri/tasks/PrintParameters',
+    'esri/tasks/PrintTemplate',
     'esri/geometry/webMercatorUtils',
     'dojo/dom',
     'dojo/dom-class',
@@ -39,19 +48,27 @@ require([
 ], function (
     Map,
     arcgisUtils,
+    esriConfig,
     Geocoder,
     HomeButton,
     LocateButton,
+    Measurement,
     PopupTemplate,
     Graphic,
     Extent,
     Multipoint,
     Point,
     ArcGISTiledMapServiceLayer,
+    SnappingManager,
     SpatialReference,
     PictureMarkerSymbol,
+    GeometryService,
     IdentifyParameters,
     IdentifyTask,
+    LegendLayer,
+    PrintTask,
+    PrintParameters,
+    PrintTemplate,
     webMercatorUtils,
     dom,
     domClass,
@@ -62,6 +79,8 @@ require([
 
     //bring this line back after experiment////////////////////////////
     //allLayers = mapLayers;
+
+    esriConfig.defaults.geometryService = new GeometryService("http://107.20.228.18/arcgis/rest/services/Utilities/Geometry/GeometryServer");
 
     map = Map('mapDiv', {
         basemap: 'hybrid',
@@ -76,6 +95,15 @@ require([
     }, "locateButton");
     locate.startup();
 
+    var measurement = new Measurement({
+        map: map,
+        advancedLocationUnits: true
+    }, dom.byId("measurementDiv"));
+    measurement.startup();
+
+    var utmCoords = $('<tr class="esriMeasurementTableRow" id="utmCoords"><td><span>UTM17</span></td><td class="esriMeasurementTableCell"> <span id="utmX" dir="ltr">UTM X</span></td> <td class="esriMeasurementTableCell"> <span id="utmY" dir="ltr">UTM Y</span></td></tr>');
+    $('.esriMeasurementResultTable').append(utmCoords);
+
     //following block forces map size to override problems with default behavior
     $(window).resize(function () {
         if ($("#legendCollapse").hasClass('in')) {
@@ -87,6 +115,25 @@ require([
         }
         else {
             $('#legendElement').css('height', 'initial');
+        }
+    });
+
+    function showPrintModal() {
+        $('#printModal').modal('show');
+    }
+
+    $('#printNavButton').click(function(){
+        showPrintModal();
+    });
+
+    $('#printExecuteButton').click(function () {
+        $(this).button('loading');
+        printMap();
+    });
+
+    $('#printTitle').keyup(function(e) {
+        if(e.which == 13) {
+            printMap();
         }
     });
 
@@ -190,8 +237,8 @@ require([
     //map click handler
     on(map, "click", function(evt) {
         
-        map.graphics.clear(); 
-        map.infoWindow.hide();
+        map.graphics.clear();
+        //map.infoWindow.hide();
 
         //alert("scale: " + map.getScale() + ", level: " + map.getLevel());
 
@@ -200,6 +247,7 @@ require([
        
         if (map.getLevel() >= 12) {        
             // the deferred variable is set to the parameters defined above and will be used later to build the contents of the infoWindow.
+            identifyTask = new IdentifyTask(allLayers[0].layers["Wetlands"].url);
             var deferredResult = identifyTask.execute(identifyParams);
 
             setCursorByID("mainDiv", "wait");
@@ -234,11 +282,19 @@ require([
 
                     map.graphics.add(graphic);
 
+                    var projmeta = '';
+                    if (attrStatus.SUPPMAPINFO == 'None') {
+                        projmeta = " NONE";
+                    } else {
+                        projmeta = " <a target='_blank' href='" + attrStatus.SUPPMAPINFO + "'>click here</a>";
+                    }
+
                     var template = new esri.InfoTemplate("Wetland",
                         "<b>Classification:</b> " + attr.ATTRIBUTE + " (<a target='_blank' href='http://107.20.228.18/decoders/wetlands.aspx?CodeURL=" + attr.ATTRIBUTE + "''>decode</a>)<br/>"+
                         "<p><b>Wetland Type:</b> " + attr.WETLAND_TYPE + "<br/>" +
                         "<b>Acres:</b> " + Number(attr.ACRES).toFixed(2) + "<br/>" +
                         "<b>Image Date(s):</b> " + attrStatus.IMAGE_DATE + "<br/>" +
+                        "<b>Project Metadata:</b>" + projmeta +
                         "<br/><p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to wetland</a></p>");
                         
                     //ties the above defined InfoTemplate to the feature result returned from a click event 
@@ -246,7 +302,7 @@ require([
                     feature.setInfoTemplate(template);
 
                     map.infoWindow.setFeatures([feature]);
-                    map.infoWindow.show(evt.mapPoint);
+                    map.infoWindow.show(evt.mapPoint, map.getInfoWindowAnchor(evt.screenPoint));
 
                     var infoWindowClose = dojo.connect(map.infoWindow, "onHide", function(evt) {
                         map.graphics.clear();
@@ -266,9 +322,87 @@ require([
 
                     //map.infoWindow.show(evt.mapPoint);
 
-                } else {
-                    setCursorByID("mainDiv", "default");
-                    map.setCursor("default");
+                } else if (response.length <= 1) {
+
+                    identifyTask = new IdentifyTask(allLayers[0].layers["Riparian"].url);
+
+                    var deferredResult = identifyTask.execute(identifyParams);
+
+                    deferredResult.addCallback(function(response) {     
+                
+                        if (response.length > 1) {
+
+                            var feature;
+                            var attr;
+                            var attrStatus;
+
+                            for (var i = 0; i < response.length; i++) {
+                                if (response[i].layerId == 0) {
+                                    feature = response[i].feature;
+                                    attr = feature.attributes;
+                                } else if (response[i].layerId == 1) {
+                                    attrStatus = response[i].feature.attributes;
+                                }
+                                
+                            }
+                            
+                            // Code for adding wetland highlight
+                            var symbol = new esri.symbol.SimpleFillSymbol(esri.symbol.SimpleFillSymbol.STYLE_SOLID, 
+                                new esri.symbol.SimpleLineSymbol(esri.symbol.SimpleLineSymbol.STYLE_SOLID,
+                                new dojo.Color([255,255,0]), 2), new dojo.Color([98,194,204,0])
+                            );
+                            feature.geometry.spatialReference = map.spatialReference;
+                            var graphic = feature;
+                            graphic.setSymbol(symbol);
+
+                            map.graphics.add(graphic);
+
+                            var projmeta = '';
+                            if (attrStatus.SUPPMAPINFO == 'None') {
+                                projmeta = " NONE";
+                            } else {
+                                projmeta = " <a target='_blank' href='" + attrStatus.SUPPMAPINFO + "'>click here</a>";
+                            }
+
+                            var template = new esri.InfoTemplate("Riparian",
+                                "<b>Classification:</b> " + attr.ATTRIBUTE + " (<a target='_blank' href='http://107.20.228.18/decoders/wetlands.aspx?CodeURL=" + attr.ATTRIBUTE + "''>decode</a>)<br/>"+
+                                "<p><b>Wetland Type:</b> " + attr.WETLAND_TYPE + "<br/>" +
+                                "<b>Acres:</b> " + Number(attr.ACRES).toFixed(2) + "<br/>" +
+                                "<b>Image Date(s):</b> " + attrStatus.IMAGE_DATE + "<br/>" +
+                                "<b>Project Metadata:</b>" + projmeta +
+                                "<br/><p><a id='infoWindowLink' href='javascript:void(0)'>Zoom to wetland</a></p>");
+                                
+                            //ties the above defined InfoTemplate to the feature result returned from a click event 
+                            
+                            feature.setInfoTemplate(template);
+
+                            map.infoWindow.setFeatures([feature]);
+                            map.infoWindow.show(evt.mapPoint);
+
+                            var infoWindowClose = dojo.connect(map.infoWindow, "onHide", function(evt) {
+                                map.graphics.clear();
+                                dojo.disconnect(map.infoWindow, infoWindowClose);
+                            });
+
+                            setCursorByID("mainDiv", "default");
+                            map.setCursor("default");
+
+                            $("#infoWindowLink").click(function(event) {
+                                var convertedGeom = webMercatorUtils.webMercatorToGeographic(feature.geometry);
+
+                                var featExtent = convertedGeom.getExtent();
+                                
+                                map.setExtent(featExtent, true);
+                            });
+
+                            //map.infoWindow.show(evt.mapPoint);
+
+                        } else {
+                            setCursorByID("mainDiv", "default");
+                            map.setCursor("default");
+                            map.infoWindow.hide();
+                        }
+                    });
                 }
             });
         }
@@ -391,6 +525,64 @@ require([
             });
     }
 
+    function printMap() {
+
+        var printParams = new PrintParameters();
+        printParams.map = map;
+
+        var template = new PrintTemplate();
+        template.exportOptions = {
+            width: 500,
+            height: 400,
+            dpi: 300
+        };
+        template.format = "PDF";
+        template.layout = "Letter ANSI A Landscape";
+        template.preserveScale = false;
+        var legendLayer = new LegendLayer();
+        legendLayer.layerId = "Wetlands";
+        //legendLayer.subLayerIds = [*];
+
+        var userTitle = $("#printTitle").val();
+        //if user does not provide title, use default. otherwise apply user title
+        if (userTitle == "") {
+            template.layoutOptions = {
+                "titleText": "Wetlands print test",
+                "authorText" : "National Wetlands Inventory (NWI)",
+                "copyrightText": "This page was produced by the NWI mapper",
+                "legendlayers": [legendLayer]
+            };
+        } else {
+            template.layoutOptions = {
+                "titleText": userTitle,
+                "authorText" : "National Wetlands Inventory (NWI)",
+                "copyrightText": "This page was produced by the NWI mapper",
+                "legendlayers": [legendLayer]
+            };
+        }
+        var docTitle = template.layoutOptions.titleText;
+        printParams.template = template;
+        var printMap = new PrintTask("http://107.20.228.18/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
+        printMap.execute(printParams, printDone, printError);
+
+        function printDone(event) {
+            //alert(event.url);
+            //window.open(event.url, "_blank");
+            printCount++;
+            //var printJob = $('<a href="'+ event.url +'" target="_blank">Printout ' + printCount + ' </a>');
+            var printJob = $('<p><label>' + printCount + ': </label>&nbsp;&nbsp;<a href="'+ event.url +'" target="_blank">' + docTitle +' </a></p>');
+            //$("#print-form").append(printJob);
+            $("#printJobsDiv").find("p.toRemove").remove();
+            $("#printModalBody").append(printJob);
+            $("#printTitle").val("");
+            $("#printExecuteButton").button('reset');
+        }
+
+        function printError(event) {
+            alert("Sorry, an unclear print error occurred. Please try refreshing the application to fix the problem");
+        }
+    }
+
     function setCursorByID(id,cursorStyle) {
         var elem;
          if (document.getElementById &&
@@ -429,6 +621,17 @@ require([
 
         $('#legendCollapse').on('hide.bs.collapse', function () {
             $('#legendElement').css('height', 'initial');
+        });
+
+        $('#measurementCollapse').on('shown.bs.collapse', function () {
+            //show label when the collapse panel is expanded(for mobile, where label is hidden while collapsed)
+            $('#measureLabel').show();
+        });
+        $('#measurementCollapse').on('hide.bs.collapse', function () {
+            //hide label on collapse if window is small (mobile)
+            if (window.innerWidth <= 767){
+                $('#measureLabel').hide();
+            }
         });
 
     });
@@ -899,6 +1102,40 @@ require([
             }
         }
         /* parse layers.js */
+
+        var outSR = new SpatialReference(26917);
+        measurement.on("measure-end", function(evt){
+            //$("#utmCoords").remove();
+            var resultGeom = evt.geometry;
+            var utmResult;
+            var absoluteX = (evt.geometry.x)*-1;
+            if ( absoluteX < 84 && absoluteX > 78 ){
+                geomService.project ( [ resultGeom ], outSR, function (projectedGeoms){
+                    utmResult = projectedGeoms[0];
+                    console.log(utmResult);
+                    var utmX = utmResult.x.toFixed(0);
+                    var utmY = utmResult.y.toFixed(0);
+                    $("#utmX").html(utmX);
+                    $("#utmY").html(utmY);
+                    //var utmCoords = $('<tr id="utmCoords"><td dojoattachpoint="pinCell"><span>UTM17</span></td> <td class="esriMeasurementTableCell"> <span id="utmX" dir="ltr">' + utmX + '</span></td> <td class="esriMeasurementTableCell"> <span id="utmY" dir="ltr">' + utmY + '</span></td></tr>');
+                    //$('.esriMeasurementResultTable').append(utmCoords);
+                });
+
+            } else {
+                //$("#utmX").html("out of zone");
+                $("#utmX").html('<span class="label label-danger">outside zone</span>');
+                //$("#utmY").html("out of zone");
+                $("#utmY").html('<span class="label label-danger">outside zone</span>');
+            }
+
+
+            //geomService.project ( [ resultGeom ], outSR, function (projectedGeoms){
+            //    utmResult = projectedGeoms[0];
+            //    console.log(utmResult);
+
+            //});
+
+        });
 
         var legend = new Legend({
             map: map,
