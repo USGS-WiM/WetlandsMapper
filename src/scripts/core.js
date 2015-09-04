@@ -11,6 +11,7 @@ var allLayers;
 var maxLegendHeight;
 var maxLegendDivHeight;
 var printCount = 0;
+var legendLayers = [];
 
 var identifyTask, identifyParams;
 
@@ -20,6 +21,7 @@ require([
     'esri/config',
     'esri/dijit/Geocoder',
     'esri/dijit/HomeButton',
+    'esri/dijit/Legend',
     'esri/dijit/LocateButton',
     'esri/dijit/Measurement',
     'esri/dijit/PopupTemplate',
@@ -50,6 +52,7 @@ require([
     esriConfig,
     Geocoder,
     HomeButton,
+    Legend,
     LocateButton,
     Measurement,
     PopupTemplate,
@@ -84,10 +87,12 @@ require([
         basemap: 'hybrid',
         extent: new Extent(-14638882.654811008, 2641706.3772205533, -6821514.898031538, 6403631.161302788, new SpatialReference({ wkid:3857 }))
     });
+
     var home = new HomeButton({
         map: map
     }, "homeButton");
     home.startup();
+
     var locate = new LocateButton({
         map: map
     }, "locateButton");
@@ -236,7 +241,7 @@ require([
     on(map, "click", function(evt) {
         
         map.graphics.clear();
-        //map.infoWindow.hide();
+        //map.infoWindow.hide();s
 
         //alert("scale: " + map.getScale() + ", level: " + map.getLevel());
 
@@ -611,10 +616,20 @@ require([
         $('#legendElement').css('max-height', maxLegendHeight);
 
         $('#legendCollapse').on('shown.bs.collapse', function () {
-            maxLegendHeight =  ($('#mapDiv').height()) * 0.90;
-            $('#legendElement').css('max-height', maxLegendHeight);
-            maxLegendDivHeight = ($('#legendElement').height()) - parseInt($('#legendHeading').css("height").replace('px',''));
-            $('#legendDiv').css('max-height', maxLegendDivHeight);
+            if (legendDiv.innerHTML.length == 0 ) {
+                var legend = new Legend({
+                    map: map,
+                    layerInfos: legendLayers
+                }, "legendDiv");
+                legend.startup();
+
+                /*legend.addCallback(function(response) { 
+                    maxLegendHeight =  ($('#mapDiv').height()) * 0.90;
+                    $('#legendElement').css('max-height', maxLegendHeight);
+                    maxLegendDivHeight = ($('#legendElement').height()) - parseInt($('#legendHeading').css("height").replace('px',''));
+                    $('#legendDiv').css('max-height', maxLegendDivHeight);
+                });*/
+            }
         });
 
         $('#legendCollapse').on('hide.bs.collapse', function () {
@@ -635,7 +650,6 @@ require([
     });
 
     require([
-        'esri/dijit/Legend',
         'esri/tasks/locator',
         'esri/tasks/query',
         'esri/tasks/QueryTask',
@@ -656,7 +670,6 @@ require([
         'dojo/dom-style',
         'dojo/on'
     ], function(
-        Legend,
         Locator,
         Query,
         QueryTask,
@@ -678,7 +691,6 @@ require([
         on
     ) {
 
-        var legendLayers = [];
         var layersObject = [];
         var layerArray = [];
         var staticLegendImage;
@@ -995,7 +1007,7 @@ require([
 
 
         //get visible and non visible layer lists
-        function addMapServerLegend(layerName, layerDetails) {
+        /*function addMapServerLegend(layerName, layerDetails) {
 
 
             if (layerDetails.wimOptions.layerType === 'agisFeature') {
@@ -1073,7 +1085,7 @@ require([
                                 //placeholder icon
                                 //<img alt="Legend Swatch" src="http://placehold.it/25x41" />
 
-                                $.each(feature, function () {
+                                /*$.each(feature, function () {
 
                                     //make sure there is a legend swatch
                                     if (this.imageData) {
@@ -1093,12 +1105,12 @@ require([
 
                                  }
                                  */
-                            }
+                            /*}
                         }); //each visible layer
                     }); //each legend item
                 }); //get legend json
             }
-        }
+        }*/
         /* parse layers.js */
 
         var outSR = new SpatialReference(26917);
@@ -1134,16 +1146,8 @@ require([
             //});
 
         });
-
-        var legend = new Legend({
-            map: map,
-            layerInfos: legendLayers
-        }, "legendDiv");
-        legend.startup();
-
-
+        
     });//end of require statement containing legend building code
-
 
 });
 
