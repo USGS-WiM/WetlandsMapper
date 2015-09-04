@@ -610,10 +610,10 @@ require([
             $("#sidebar").getNiceScroll().resize();
         });
 
-        $("#legendDiv").niceScroll();
-
         maxLegendHeight =  ($('#mapDiv').height()) * 0.90;
         $('#legendElement').css('max-height', maxLegendHeight);
+        maxLegendDivHeight = (maxLegendHeight) - parseInt($('#legendHeading').css("height").replace('px',''));
+        $('#legendDiv').css('max-height', maxLegendDivHeight);
 
         $('#legendCollapse').on('shown.bs.collapse', function () {
             if (legendDiv.innerHTML.length == 0 ) {
@@ -622,6 +622,8 @@ require([
                     layerInfos: legendLayers
                 }, "legendDiv");
                 legend.startup();
+
+                $("#legendDiv").niceScroll();
 
                 /*legend.addCallback(function(response) { 
                     maxLegendHeight =  ($('#mapDiv').height()) * 0.90;
