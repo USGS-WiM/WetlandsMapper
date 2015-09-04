@@ -94,7 +94,8 @@ require([
     home.startup();
 
     var locate = new LocateButton({
-        map: map
+        map: map,
+        scale: 4514,
     }, "locateButton");
     locate.startup();
 
