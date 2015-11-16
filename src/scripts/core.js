@@ -40,6 +40,7 @@ require([
     'esri/tasks/PrintParameters',
     'esri/tasks/PrintTemplate',
     'esri/geometry/webMercatorUtils',
+    'esri/urlUtils',
     'dojo/dom',
     'dojo/dom-class',
     'dojo/dnd/Moveable',
@@ -71,6 +72,7 @@ require([
     PrintParameters,
     PrintTemplate,
     webMercatorUtils,
+    urlUtils,
     dom,
     domClass,
     Moveable,
@@ -81,7 +83,7 @@ require([
     //bring this line back after experiment////////////////////////////
     //allLayers = mapLayers;
 
-    esriConfig.defaults.geometryService = new GeometryService("http://107.20.228.18/arcgis/rest/services/Utilities/Geometry/GeometryServer");
+    esriConfig.defaults.geometryService = new GeometryService("http://54.175.105.11:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer");
 
     map = Map('mapDiv', {
         basemap: 'hybrid',
@@ -294,7 +296,7 @@ require([
                     }
 
                     var template = new esri.InfoTemplate("Wetland",
-                        "<b>Classification:</b> " + attr.ATTRIBUTE + " (<a target='_blank' href='http://107.20.228.18/decoders/wetlands.aspx?CodeURL=" + attr.ATTRIBUTE + "''>decode</a>)<br/>"+
+                        "<b>Classification:</b> " + attr.ATTRIBUTE + " (<a target='_blank' href='http://54.175.105.11:6080/decoders/wetlands.aspx?CodeURL=" + attr.ATTRIBUTE + "''>decode</a>)<br/>"+
                         "<p><b>Wetland Type:</b> " + attr.WETLAND_TYPE + "<br/>" +
                         "<b>Acres:</b> " + Number(attr.ACRES).toFixed(2) + "<br/>" +
                         "<b>Image Date(s):</b> " + attrStatus.IMAGE_DATE + "<br/>" +
@@ -369,7 +371,7 @@ require([
                             }
 
                             var template = new esri.InfoTemplate("Riparian",
-                                "<b>Classification:</b> " + attr.ATTRIBUTE + " (<a target='_blank' href='http://107.20.228.18/decoders/wetlands.aspx?CodeURL=" + attr.ATTRIBUTE + "''>decode</a>)<br/>"+
+                                "<b>Classification:</b> " + attr.ATTRIBUTE + " (<a target='_blank' href='http://54.175.105.11:6080/decoders/wetlands.aspx?CodeURL=" + attr.ATTRIBUTE + "''>decode</a>)<br/>"+
                                 "<p><b>Wetland Type:</b> " + attr.WETLAND_TYPE + "<br/>" +
                                 "<b>Acres:</b> " + Number(attr.ACRES).toFixed(2) + "<br/>" +
                                 "<b>Image Date(s):</b> " + attrStatus.IMAGE_DATE + "<br/>" +
@@ -566,7 +568,7 @@ require([
         }
         var docTitle = template.layoutOptions.titleText;
         printParams.template = template;
-        var printMap = new PrintTask("http://107.20.228.18/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
+        var printMap = new PrintTask("http://54.175.105.11:6080/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
         printMap.execute(printParams, printDone, printError);
 
         function printDone(event) {
