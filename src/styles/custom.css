@@ -1,0 +1,248 @@
+body,
+html{
+    font-family: 'Lato', sans-serif;
+}
+
+
+textarea, input, button, textarea:focus, input:focus, button:focus, textarea:active, input:active, button:active { outline: none; }
+.panel{border-radius:none !important; border:none !important;}
+/*
+===================
+===================
+NAVIGATION BAR
+===================
+===================
+*/
+#navbar{
+    box-sizing: border-box;
+    padding: 0px 40px 0px 40px;
+    background-color: #161C27;
+    vertical-align: middle;
+}
+    .navbar-brand span{
+        padding-left: 10px;
+        vertical-align: middle;
+        position: relative; top:1px;
+        line-height: 100%;
+        color: #fff;
+        font-family: 'Lato', sans-serif;
+        font-weight: 300;
+        letter-spacing: 1px;
+    }
+
+    #geosearchNav{
+        background-color: #3C6DD1;
+        border: 1px solid #3C6DD1;
+        border-radius: 20px;
+        letter-spacing: 1px;
+        font-weight: 300;
+        font-family: 'Lato', sans-serif;
+        font-size: 10pt;
+        box-sizing: border-box;
+        padding: 6px 15px 6px 15px;
+        transition: 0.2s;
+    }
+        #geosearchNav:hover{
+            background-color: #2b5ab9;
+            transition: 0.2s;
+            border-color: #2b5ab9;
+            cursor: pointer;
+        }
+        #geosearchButtonText{
+            text-transform:uppercase;
+            letter-spacing:1px;
+        }
+
+
+/*
+===================
+===================
+    SIDEBAR
+===================
+===================
+*/
+#sidebar{
+    background-color: #ECEEF4;
+    border:none;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+    .wim-sidebar-panel{
+        text-align: right;
+        box-sizing: border-box;
+        text-transform: uppercase;
+        font-family: 'Lato', sans-serif;
+        font-weight: 300;
+        letter-spacing: 1px;
+        padding: 0px 0px 0px 0px;
+        border-bottom: 2px solid #E0E4EE;
+        margin:0;
+    }
+        .panel-title a{
+            color:#6E7490;
+            font-weight:bolder;
+            box-sizing:border-box;
+            padding: 9px 4px 8px 4px;
+            text-decoration:none;
+            font-size:11pt;
+            font-weight:lighter;
+            text-transform:uppercase;
+            letter-spacing:2px;
+            display:block; width:100%;
+            text-align:right;
+            transition:0.2s;
+        }
+            .panel-title a::after{
+                margin-left:8px;
+                color:#6E7490;
+                position:relative; top:0px;
+                width:14px;
+            }
+            .panel-title a:hover{
+                text-decoration:none;
+                cursor:pointer;
+                transform:scale(1.02);
+                -webkit-transform:scale(1.02);
+                color:#000;
+                transition:0.2s;
+                font-weight:400;
+                letter-spacing:2px;
+            }
+
+
+    /*Sidebar collapsable panel*/
+    .panel-collapse{
+        width:100%;
+        background-color:#191C29;
+        border-top:3px solid #000;
+        padding-bottom:20px;
+        -moz-box-shadow:    inset 0 0 15px #000000;
+       -webkit-box-shadow: inset 0 0 15px #000000;
+       box-shadow:         inset 0 0 15px #000000;
+    }
+
+
+    /*Remove blue background collapsable header*/
+    .alert-info{
+        background-color:transparent;
+        color: #A0A0BE;
+        letter-spacing:1px;
+        font-weight:300;
+        font-family:'Lato', sans-serif;
+        border: none;
+        text-align:center;
+        padding-bottom:5px;
+    }
+        .alert strong{
+            width:100%;
+            display:block;
+            font-weight:300;
+            letter-spacing:1px;
+            text-align:center;
+            font-size:9pt;
+            border-bottom:1px solid #33334b;
+            padding-bottom:10px;
+            padding-top:6px;
+        }
+
+
+
+    /*Remove background and stuff from Button groups*/
+    .btn-default{
+        background-color:transparent !important;
+        border:none;
+        border:none;
+        color: rgba(215,215,228,0.5) !important;
+        box-shadow:none;
+        font-weight:400;
+        letter-spacing:1px;
+        font-size:9pt;
+        transition:0.2s;
+        font-weight:300!important;
+    }
+        .btn-default:hover{
+            cursor:pointer;
+            color:#fff;
+            transform:scale(1.02);
+            -webkit-transform:scale(1.02);
+        }
+    .panel-collapse .btn-default.active{
+        background-color:transparent;
+        border:none;
+        box-shadow:none;
+        opacity:1;
+        color:#d7d7e4 !important;
+        font-weight:400;
+        letter-spacing:1px;
+        font-size:9pt;
+        transition:0.2s;
+    }
+        .panel-collapse .btn-default.active:hover{
+            color:#fff;
+            transition:0.2s;
+            transform:scale(1.02);
+            -webkit-transform:scale(1.02);
+        }
+
+
+
+    /*Radio buttons under checkbox*/
+    .btn-group-vertical{
+        clear:both;
+        display:block;
+    }
+
+    /*Indent Radio Buttons on Left*/
+    .fa-dot-circle-o,
+    .fa-circle-o{
+        padding-left:25px;
+    }
+
+
+
+    /*Base Map Button*/
+    .basemapBtn{
+        float:left;
+        display:inline-block;
+        width:50%;
+        margin-bottom:8px;
+        text-transform:uppercase;
+        color:#fff !important;
+        font-size:7pt;
+        transition:0.2s;
+        outline: none !important;
+    }
+        .basemapBtn img{
+            margin-bottom:4px;
+            border:none;
+            border-radius:0;
+        }
+        .basemapBtn:hover{
+            transform:scale(1.05);
+            transition:0.2s;
+            -webkit-transform:scale(1.05);
+        }
+
+
+
+
+/*LEGEND*/
+.legendClass{
+    border-radius:none !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    top:10px; right:10px;
+}
+    .legendClass a{
+        text-align:center;
+        display:block;
+    }
+.esriLegendService{
+    color:#fff;
+}
+
+
+/*Latitude and Longitude*/
+.latLngScale{
+    background-color: #ECEEF4;
+    border-radius:none;
+
+}

@@ -723,7 +723,7 @@ require([
                     var layer = new FeatureLayer(layerDetails.url, layerDetails.options);
                     //check if include in legend is true
                     if (layerDetails.wimOptions && layerDetails.wimOptions.includeLegend == true){
-                        legendLayers.push({layer:layer, title: layerName});
+                        legendLayers.unshift({layer:layer, title: layerName});
                     }
                     addLayer(group.groupHeading, group.showGroupHeading, layer, layerName, exclusiveGroupName, layerDetails.options, layerDetails.wimOptions);
                     //addMapServerLegend(layerName, layerDetails);
@@ -733,7 +733,7 @@ require([
                     var layer = new WMSLayer(layerDetails.url, {resourceInfo: layerDetails.options.resourceInfo, visibleLayers: layerDetails.options.visibleLayers }, layerDetails.options);
                     //check if include in legend is true
                     if (layerDetails.wimOptions && layerDetails.wimOptions.includeLegend == true){
-                        legendLayers.push({layer:layer, title: layerName});
+                        legendLayers.unshift({layer:layer, title: layerName});
                     }
                     //map.addLayer(layer);
                     addLayer(group.groupHeading, group.showGroupHeading, layer, layerName, exclusiveGroupName, layerDetails.options, layerDetails.wimOptions);
@@ -754,7 +754,7 @@ require([
                         layer.setLayerDefinitions(layerDefs);
                     }
                     if (layerDetails.wimOptions && layerDetails.wimOptions.includeLegend == true){
-                        legendLayers.push({layer:layer, title: layerName});
+                        legendLayers.unshift({layer:layer, title: layerName});
                     }
                     //map.addLayer(layer);
                     addLayer(group.groupHeading, group.showGroupHeading, layer, layerName, exclusiveGroupName, layerDetails.options, layerDetails.wimOptions);
@@ -765,7 +765,7 @@ require([
                     var layer = new ArcGISImageServiceLayer(layerDetails.url, layerDetails.options);
                     //check if include in legend is true
                     if (layerDetails.wimOptions && layerDetails.wimOptions.includeLegend == true){
-                        legendLayers.push({layer:layer, title: layerName});
+                        legendLayers.unshift({layer:layer, title: layerName});
                     }
                     if (layerDetails.visibleLayers) {
                         layer.setVisibleLayers(layerDetails.visibleLayers);
