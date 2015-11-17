@@ -1,5 +1,5 @@
 //for jshint
-'use strict';
+//'use strict';
 // Generated on 2015-04-13 using generator-wim 0.0.1
 
 /**
@@ -82,6 +82,8 @@ require([
 
     //bring this line back after experiment////////////////////////////
     //allLayers = mapLayers;
+
+    esriConfig.defaults.io.corsEnabledServers = true;
 
     esriConfig.defaults.geometryService = new GeometryService("http://54.175.105.11:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer");
 
