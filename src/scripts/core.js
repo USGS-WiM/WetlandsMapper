@@ -560,22 +560,22 @@ require([
         //if user does not provide title, use default. otherwise apply user title
         if (userTitle == "") {
             template.layoutOptions = {
-                "titleText": "Wetlands print test",
+                "titleText": "Wetlands",
                 "authorText" : "National Wetlands Inventory (NWI)",
                 "copyrightText": "This page was produced by the NWI mapper",
-                "legendlayers": [legendLayer]
+                "legendLayers": [legendLayer]
             };
         } else {
             template.layoutOptions = {
                 "titleText": userTitle,
                 "authorText" : "National Wetlands Inventory (NWI)",
                 "copyrightText": "This page was produced by the NWI mapper",
-                "legendlayers": [legendLayer]
+                "legendLayers": [legendLayer]
             };
         }
         var docTitle = template.layoutOptions.titleText;
         printParams.template = template;
-        var printMap = new PrintTask("http://52.70.106.103:6080/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
+        var printMap = new PrintTask("http://107.20.228.18/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
         printMap.execute(printParams, printDone, printError);
 
         function printDone(event) {
