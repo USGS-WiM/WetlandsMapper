@@ -92,6 +92,11 @@ require([
                             urlPrefix: "http://52.70.106.103:6080/arcgis/rest"
                         });
 
+    urlUtils.addProxyRule({
+                            proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
+                            urlPrefix: "http://107.20.228.18/arcgis/rest/services/"
+                        });
+
     map = Map('mapDiv', {
         basemap: 'hybrid',
         extent: new Extent(-14638882.654811008, 2641706.3772205533, -6821514.898031538, 6403631.161302788, new SpatialReference({ wkid:3857 }))
