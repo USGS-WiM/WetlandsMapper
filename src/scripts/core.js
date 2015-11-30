@@ -89,7 +89,32 @@ require([
 
     urlUtils.addProxyRule({
                             proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
-                            urlPrefix: "http://52.70.106.103:6080/arcgis/rest"
+                            urlPrefix: "http://52.70.106.103:6080/arcgis/rest/services/Wetlands"
+                        });
+
+    urlUtils.addProxyRule({
+                            proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
+                            urlPrefix: "http://52.70.106.103:6080/arcgis/rest/services/Wetlands_Raster"
+                        });
+
+    urlUtils.addProxyRule({
+                            proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
+                            urlPrefix: "http://52.70.106.103:6080/arcgis/rest/services/Wetlands_Status"
+                        });
+
+    urlUtils.addProxyRule({
+                            proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
+                            urlPrefix: "http://52.70.106.103:6080/arcgis/rest/services/Riparian"
+                        });
+
+    urlUtils.addProxyRule({
+                            proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
+                            urlPrefix: "http://52.70.106.103:6080/arcgis/rest/services/Data_Source"
+                        });
+
+    urlUtils.addProxyRule({
+                            proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
+                            urlPrefix: "http://52.70.106.103:6080/arcgis/rest/services/Historic_Wetlands"
                         });
 
     map = Map('mapDiv', {
@@ -575,7 +600,7 @@ require([
         //"legendLayers": [legendLayer]
         var docTitle = template.layoutOptions.titleText;
         printParams.template = template;
-        var printMap = new PrintTask("http://52.70.106.103:6080/arcgis/rest/services/SecurePrinting/ExportWebMap/GPServer/Export%20Web%20Map");
+        var printMap = new PrintTask("http://52.70.106.103:6080/arcgis/rest/services/SecuredPrinting/ExportWebMap/GPServer/Export%20Web%20Map");
         printMap.execute(printParams, printDone, printError);
 
         function printDone(event) {
