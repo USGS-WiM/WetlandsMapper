@@ -575,7 +575,7 @@ require([
         //"legendLayers": [legendLayer]
         var docTitle = template.layoutOptions.titleText;
         printParams.template = template;
-        var printMap = new PrintTask("http://52.70.106.103:6080/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
+        var printMap = new PrintTask("http://52.70.106.103:6080/arcgis/rest/services/SecurePrinting/ExportWebMap/GPServer/Export%20Web%20Map");
         printMap.execute(printParams, printDone, printError);
 
         function printDone(event) {
