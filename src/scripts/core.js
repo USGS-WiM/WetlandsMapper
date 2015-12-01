@@ -83,40 +83,45 @@ require([
     //bring this line back after experiment////////////////////////////
     //allLayers = mapLayers;
 
-    esriConfig.defaults.io.corsEnabledServers = true;
+    //esriConfig.defaults.io.corsEnabledServers = true;
     esri.config.defaults.io.proxyUrl = "http://52.70.106.103/serviceProxy/proxy.ashx";
 
-    esriConfig.defaults.geometryService = new GeometryService("http://52.70.106.103:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer");
+    esriConfig.defaults.geometryService = new GeometryService("http://52.70.106.103/arcgis/rest/services/Utilities/Geometry/GeometryServer");
 
+    /*urlUtils.addProxyRule({
+                            proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
+                            urlPrefix: "http://52.70.106.103/arcgis/rest/services/SecurePrinting/"
+                        });
+    
     urlUtils.addProxyRule({
                             proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
-                            urlPrefix: "http://52.70.106.103:6080/arcgis/rest/services/Wetlands"
+                            urlPrefix: "http://52.70.106.103/arcgis/rest/services/Wetlands"
                         });
 
     urlUtils.addProxyRule({
                             proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
-                            urlPrefix: "http://52.70.106.103:6080/arcgis/rest/services/Wetlands_Raster"
+                            urlPrefix: "http://52.70.106.103/arcgis/rest/services/Wetlands_Raster"
                         });
 
     urlUtils.addProxyRule({
                             proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
-                            urlPrefix: "http://52.70.106.103:6080/arcgis/rest/services/Wetlands_Status"
+                            urlPrefix: "http://52.70.106.103/arcgis/rest/services/Wetlands_Status"
                         });
 
     urlUtils.addProxyRule({
                             proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
-                            urlPrefix: "http://52.70.106.103:6080/arcgis/rest/services/Riparian"
+                            urlPrefix: "http://52.70.106.103/arcgis/rest/services/Riparian"
                         });
 
     urlUtils.addProxyRule({
                             proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
-                            urlPrefix: "http://52.70.106.103:6080/arcgis/rest/services/Data_Source"
+                            urlPrefix: "http://52.70.106.103/arcgis/rest/services/Data_Source"
                         });
 
     urlUtils.addProxyRule({
                             proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
-                            urlPrefix: "http://52.70.106.103:6080/arcgis/rest/services/Historic_Wetlands"
-                        });
+                            urlPrefix: "http://52.70.106.103/arcgis/rest/services/Historic_Wetlands"
+                        });*/
 
     map = Map('mapDiv', {
         basemap: 'hybrid',
@@ -601,7 +606,7 @@ require([
         //"legendLayers": [legendLayer]
         var docTitle = template.layoutOptions.titleText;
         printParams.template = template;
-        var printMap = new PrintTask("http://52.70.106.103:6080/arcgis/rest/services/SecurePrinting/ExportWebMap/GPServer/Export%20Web%20Map");
+        var printMap = new PrintTask("http://52.70.106.103/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
         printMap.execute(printParams, printDone, printError);
 
         function printDone(event) {
