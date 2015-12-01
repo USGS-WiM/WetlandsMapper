@@ -84,6 +84,7 @@ require([
     //allLayers = mapLayers;
 
     esriConfig.defaults.io.corsEnabledServers = true;
+    esri.config.defaults.io.proxyUrl = "http://52.70.106.103/serviceProxy/proxy.ashx";
 
     esriConfig.defaults.geometryService = new GeometryService("http://52.70.106.103:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer");
 
