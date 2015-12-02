@@ -131,7 +131,8 @@ require([
     });
 
     var home = new HomeButton({
-        map: map
+        map: map,
+        extent: new Extent(-14638882.654811008, 2641706.3772205533, -6821514.898031538, 6403631.161302788, new SpatialReference({ wkid:3857 }))
     }, "homeButton");
     home.startup();
 
