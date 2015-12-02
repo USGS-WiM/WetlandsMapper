@@ -191,6 +191,8 @@ require([
         var initMapCenter = webMercatorUtils.webMercatorToGeographic(map.extent.getCenter());
         $('#latitude').html(initMapCenter.y.toFixed(3));
         $('#longitude').html(initMapCenter.x.toFixed(3));
+        //map.setBasemap("topo");
+        //map.setBasemap("hybrid");
     });
     //displays map scale on scale change (i.e. zoom level)
     on(map, "zoom-end", function () {
