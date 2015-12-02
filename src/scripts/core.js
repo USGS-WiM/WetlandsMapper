@@ -91,7 +91,7 @@ require([
     /*urlUtils.addProxyRule({
                             proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
                             urlPrefix: "http://52.70.106.103/arcgis/rest/services/SecurePrinting/"
-                        });
+                        });*/
     
     urlUtils.addProxyRule({
                             proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
@@ -121,7 +121,7 @@ require([
     urlUtils.addProxyRule({
                             proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
                             urlPrefix: "http://52.70.106.103/arcgis/rest/services/Historic_Wetlands"
-                        });*/
+                        });
 
     map = Map('mapDiv', {
         basemap: 'hybrid',
