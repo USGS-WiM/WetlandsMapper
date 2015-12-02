@@ -16,7 +16,7 @@ var legendLayers = [];
 var identifyTask, identifyParams;
 
 require([
-    'maptiks/map',
+    'esri/map',
     'esri/arcgis/utils',
     'esri/config',
     'esri/dijit/Geocoder',
@@ -125,8 +125,8 @@ require([
 
     map = new Map('mapDiv', {
         basemap: 'hybrid',
-        maptiks_trackcode: 'e8643190-34de-4f1f-8c49-6692f1223666',
-        maptiks_id: 'fwsmobile',
+        //maptiks_trackcode: 'e8643190-34de-4f1f-8c49-6692f1223666',
+        //maptiks_id: 'fwsmobile',
         extent: new Extent(-14638882.654811008, 2641706.3772205533, -6821514.898031538, 6403631.161302788, new SpatialReference({ wkid:3857 }))
     });
 
