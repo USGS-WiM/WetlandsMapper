@@ -16,7 +16,7 @@ var legendLayers = [];
 var identifyTask, identifyParams;
 
 require([
-    'esri/map',
+    'maptiks/map',
     'esri/arcgis/utils',
     'esri/config',
     'esri/dijit/Geocoder',
@@ -91,7 +91,7 @@ require([
     /*urlUtils.addProxyRule({
                             proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
                             urlPrefix: "http://52.70.106.103/arcgis/rest/services/SecurePrinting/"
-                        });*/
+                        });
     
     urlUtils.addProxyRule({
                             proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
@@ -121,10 +121,12 @@ require([
     urlUtils.addProxyRule({
                             proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
                             urlPrefix: "http://52.70.106.103/arcgis/rest/services/Historic_Wetlands"
-                        });
+                        });*/
 
-    map = Map('mapDiv', {
+    map = new Map('mapDiv', {
         basemap: 'hybrid',
+        maptiks_trackcode: 'e8643190-34de-4f1f-8c49-6692f1223666',
+        maptiks_id: 'fwsmobile',
         extent: new Extent(-14638882.654811008, 2641706.3772205533, -6821514.898031538, 6403631.161302788, new SpatialReference({ wkid:3857 }))
     });
 
