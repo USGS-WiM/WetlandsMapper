@@ -84,9 +84,9 @@ require([
     //allLayers = mapLayers;
 
     //esriConfig.defaults.io.corsEnabledServers = true;
-    esri.config.defaults.io.proxyUrl = "http://52.70.106.103/serviceProxy/proxy.ashx";
+    esri.config.defaults.io.proxyUrl = "https://fwsmapservices.wim.usgs.gov/serviceProxy/proxy.ashx";
 
-    esriConfig.defaults.geometryService = new GeometryService("http://52.70.106.103/arcgis/rest/services/Utilities/Geometry/GeometryServer");
+    esriConfig.defaults.geometryService = new GeometryService("https://fwsmapservices.wim.usgs.gov/arcgis/rest/services/Utilities/Geometry/GeometryServer");
 
     /*urlUtils.addProxyRule({
                             proxyUrl: "http://52.70.106.103/serviceProxy/proxy.ashx",
@@ -339,7 +339,7 @@ require([
                     }
 
                     var template = new esri.InfoTemplate("Wetland",
-                        "<b>Classification:</b> " + attr.ATTRIBUTE + " (<a target='_blank' href='http://52.70.106.103/decoders/wetlands.aspx?CodeURL=" + attr.ATTRIBUTE + "''>decode</a>)<br/>"+
+                        "<b>Classification:</b> " + attr.ATTRIBUTE + " (<a target='_blank' href='https://fwsmapservices.wim.usgs.gov/decoders/wetlands.aspx?CodeURL=" + attr.ATTRIBUTE + "''>decode</a>)<br/>"+
                         "<p><b>Wetland Type:</b> " + attr.WETLAND_TYPE + "<br/>" +
                         "<b>Acres:</b> " + Number(attr.ACRES).toFixed(2) + "<br/>" +
                         "<b>Image Date(s):</b> " + attrStatus.IMAGE_DATE + "<br/>" +
@@ -414,7 +414,7 @@ require([
                             }
 
                             var template = new esri.InfoTemplate("Riparian",
-                                "<b>Classification:</b> " + attr.ATTRIBUTE + " (<a target='_blank' href='http://52.70.106.103/decoders/wetlands.aspx?CodeURL=" + attr.ATTRIBUTE + "''>decode</a>)<br/>"+
+                                "<b>Classification:</b> " + attr.ATTRIBUTE + " (<a target='_blank' href='https://fwsmapservices.wim.usgs.gov/decoders/wetlands.aspx?CodeURL=" + attr.ATTRIBUTE + "''>decode</a>)<br/>"+
                                 "<p><b>Wetland Type:</b> " + attr.WETLAND_TYPE + "<br/>" +
                                 "<b>Acres:</b> " + Number(attr.ACRES).toFixed(2) + "<br/>" +
                                 "<b>Image Date(s):</b> " + attrStatus.IMAGE_DATE + "<br/>" +
@@ -611,7 +611,7 @@ require([
         //"legendLayers": [legendLayer]
         var docTitle = template.layoutOptions.titleText;
         printParams.template = template;
-        var printMap = new PrintTask("http://52.70.106.103/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
+        var printMap = new PrintTask("https://fwsmapservices.wim.usgs.gov/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task");
         printMap.execute(printParams, printDone, printError);
 
         function printDone(event) {
