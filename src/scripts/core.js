@@ -218,7 +218,7 @@ require([
         $('#longitude').html(geographicMapCenter.x.toFixed(3));
     });
 
-    var nationalMapBasemap = new ArcGISTiledMapServiceLayer('http://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer');
+    var nationalMapBasemap = new ArcGISTiledMapServiceLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer');
     //on clicks to swap basemap. map.removeLayer is required for nat'l map b/c it is not technically a basemap, but a tiled layer.
     on(dom.byId('btnStreets'), 'click', function () {
         map.setBasemap('streets');
