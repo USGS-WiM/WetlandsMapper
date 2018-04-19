@@ -1,0 +1,45 @@
+[
+  {
+    "name": "WetlandsMapper",
+    "organization": "U.S. Geological Survey",
+    "description": "FWS Wetlands Mapper (HTML)",
+    "version": "v0.0.0",
+    "status": ["Archival"],
+
+    "permissions": {
+      "usageType": "openSource",
+      "licenses": [
+        {
+          "name": "Public Domain",
+          "URL": "https://github.com/usgs/WetlandsMapper/blob/master/LICENSE.md"
+        }
+      ]
+    },
+
+    "homepageURL": "https://wim.usgs.gov",
+    "downloadURL": "https://github.com/USGS-WiM/WetlandsMapper/archive/master.zip",
+    "disclaimerURL": "https://github.com/USGS-WiM/WetlandsMapper/blob/master/DISCLAIMER.md",
+    "repositoryUrl": "https://github.com/USGS-WiM/WetlandsMapper",
+    "vcs": "git",
+
+    "laborHours": null,
+
+    "tags": [
+      "fws",
+      "wetlands"
+    ],
+
+    "languages": [
+      "javascript"
+    ],
+
+    "contact": {
+      "name": "Nick Estes",
+      "email": "njestes@usgs.gov"
+    },
+
+    "date": {
+      "metadataLastUpdated": "2018-04-19"
+    }
+  }
+]
